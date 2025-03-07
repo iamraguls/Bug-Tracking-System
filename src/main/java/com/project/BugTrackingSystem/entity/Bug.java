@@ -1,7 +1,9 @@
 package com.project.BugTrackingSystem.entity;
 
+import com.project.BugTrackingSystem.image.BugAttachment;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -38,13 +40,13 @@ public class Bug {
 
     private LocalDateTime resolvedAt;
 
-    @ElementCollection
-    private List<String> attachments;
+    @OneToMany(mappedBy = "bug", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BugAttachment> attachments = new ArrayList<>();
 
     public Bug() {
     }
 
-    public Bug(Long id, String title, String description, BugStatus status, BugPriority priority, Project project, User createdBy, User assignedTo, LocalDateTime createdAt, LocalDateTime resolvedAt, List<String> attachments) {
+    public Bug(Long id, String title, String description, BugStatus status, BugPriority priority, Project project, User createdBy, User assignedTo, LocalDateTime createdAt, LocalDateTime resolvedAt, List<BugAttachment> attachments) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -130,11 +132,11 @@ public class Bug {
         this.resolvedAt = resolvedAt;
     }
 
-    public List<String> getAttachments() {
+    public List<BugAttachment> getAttachments() {
         return attachments;
     }
 
-    public void setAttachments(List<String> attachments) {
+    public void setAttachments(List<BugAttachment> attachments) {
         this.attachments = attachments;
     }
 
