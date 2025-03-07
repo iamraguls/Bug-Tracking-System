@@ -2,6 +2,7 @@ package com.project.BugTrackingSystem.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "bugs")
@@ -21,25 +22,40 @@ public class Bug {
     private BugPriority priority = BugPriority.MEDIUM; // Default MEDIUM
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "created_by")
+    private User createdBy;
 
-    private LocalDateTime createdAt;
+    @ManyToOne
+    @JoinColumn(name = "assigned_to", nullable = true)
+    private User assignedTo;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime resolvedAt;
+
+    @ElementCollection
+    private List<String> attachments;
 
     public Bug() {
     }
 
-    public Bug(Long id, String title, String description, BugStatus status, BugPriority priority, User user, LocalDateTime createdAt, LocalDateTime resolvedAt) {
+    public Bug(Long id, String title, String description, BugStatus status, BugPriority priority, Project project, User createdBy, User assignedTo, LocalDateTime createdAt, LocalDateTime resolvedAt, List<String> attachments) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;
         this.priority = priority;
-        this.user = user;
+        this.project = project;
+        this.createdBy = createdBy;
+        this.assignedTo = assignedTo;
         this.createdAt = createdAt;
         this.resolvedAt = resolvedAt;
+        this.attachments = attachments;
     }
 
     public Long getId() {
@@ -82,12 +98,20 @@ public class Bug {
         this.priority = priority;
     }
 
-    public User getUser() {
-        return user;
+    public User getCreatedBy() {
+        return createdBy;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public User getAssignedTo() {
+        return assignedTo;
+    }
+
+    public void setAssignedTo(User assignedTo) {
+        this.assignedTo = assignedTo;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -104,5 +128,21 @@ public class Bug {
 
     public void setResolvedAt(LocalDateTime resolvedAt) {
         this.resolvedAt = resolvedAt;
+    }
+
+    public List<String> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<String> attachments) {
+        this.attachments = attachments;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }
