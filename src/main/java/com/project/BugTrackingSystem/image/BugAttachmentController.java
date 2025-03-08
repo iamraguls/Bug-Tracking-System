@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/bugs/{bugId}/attachments")
 public class BugAttachmentController {
 
     @Autowired
@@ -26,7 +25,7 @@ public class BugAttachmentController {
 
     private BugAttachmentRepository attachmentRepository;
 
-    @PostMapping("/upload")
+    @PostMapping("/upload/api/bugs/{bugId}/attachments")
     public ResponseEntity<?> uploadFile(
             @PathVariable Long bugId,
             @RequestParam("file") MultipartFile file) {
@@ -45,12 +44,17 @@ public class BugAttachmentController {
         }
     }
 
-    @GetMapping()
+    @GetMapping("/api/bugs/{bugId}/attachments")
     public ResponseEntity<List<BugAttachment>> getAttachmentsByBugId(@PathVariable Long bugId) {
         List<BugAttachment> attachments = bugAttachmentService.getAttachmentsByBugId(bugId);
         return ResponseEntity.ok(attachments);
     }
 
+    @DeleteMapping("/api/bugs/attachments/delete/{id}")
+    public ResponseEntity<String> deleteAttachment(@PathVariable Long id) {
+        bugAttachmentService.deleteAttachment(id);
+        return ResponseEntity.ok("Attachment deleted successfully!");
+    }
 
 
 }

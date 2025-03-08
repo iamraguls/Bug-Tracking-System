@@ -21,7 +21,7 @@ public class User implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role roles;
 
     @OneToMany(mappedBy = "createdBy")
     private List<Bug> createdBugs; // Bugs created by the user
@@ -32,19 +32,19 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(Long id, String username, String email, String password, Role role, List<Bug> createdBugs, List<Bug> assignedBugs) {
+    public User(Long id, String username, String email, String password, Role roles, List<Bug> createdBugs, List<Bug> assignedBugs) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.role = role;
+        this.roles = roles;
         this.createdBugs = createdBugs;
         this.assignedBugs = assignedBugs;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_"+role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_"+roles.name()));
     }
 
     @Override
@@ -102,11 +102,11 @@ public class User implements UserDetails {
     }
 
     public Role getRole() {
-        return role;
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRole(Role roles) {
+        this.roles = roles;
     }
 
     public List<Bug> getCreatedBugs() {
