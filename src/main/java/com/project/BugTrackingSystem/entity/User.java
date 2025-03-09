@@ -1,5 +1,7 @@
 package com.project.BugTrackingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,22 +25,26 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role roles;
 
-    @OneToMany(mappedBy = "createdBy")
-    private List<Bug> createdBugs; // Bugs created by the user
+    @JsonIgnore  // 🔥 Circular reference fix
+    @OneToMany(mappedBy = "reportedBy", cascade = CascadeType.ALL)
+//    @JsonManagedReference("user-bug-reported")
+    private List<Bug> reportedBugs;
 
-    @OneToMany(mappedBy = "assignedTo")
-    private List<Bug> assignedBugs; // Bugs assigned to the user
+    @JsonIgnore  // 🔥 Circular reference fix
+    @OneToMany(mappedBy = "assignedTo", cascade = CascadeType.ALL)
+//    @JsonManagedReference("user-bug-assigned")
+    private List<Bug> assignedBugs;
 
     public User() {
     }
 
-    public User(Long id, String username, String email, String password, Role roles, List<Bug> createdBugs, List<Bug> assignedBugs) {
+    public User(Long id, String username, String email, String password, Role roles, List<Bug> reportedBugs, List<Bug> assignedBugs) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.roles = roles;
-        this.createdBugs = createdBugs;
+        this.reportedBugs = reportedBugs;
         this.assignedBugs = assignedBugs;
     }
 
@@ -109,12 +115,12 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public List<Bug> getCreatedBugs() {
-        return createdBugs;
+    public List<Bug> getReportedBugs() {
+        return reportedBugs;
     }
 
-    public void setCreatedBugs(List<Bug> createdBugs) {
-        this.createdBugs = createdBugs;
+    public void setReportedBugs(List<Bug> reportedBugs) {
+        this.reportedBugs = reportedBugs;
     }
 
     public List<Bug> getAssignedBugs() {

@@ -1,8 +1,11 @@
 package com.project.BugTrackingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,7 +25,8 @@ public class Project {
     private LocalDate endDate;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL) // If project deleted, bugs also deleted
-    private List<Bug> bugs;
+    @JsonManagedReference("project-bug")
+    private List<Bug> bugs = new ArrayList<>();
 
     public Project() {
     }

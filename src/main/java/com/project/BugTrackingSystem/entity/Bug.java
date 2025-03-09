@@ -1,5 +1,8 @@
 package com.project.BugTrackingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.BugTrackingSystem.image.BugAttachment;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -23,16 +26,21 @@ public class Bug {
     @Enumerated(EnumType.STRING)
     private BugPriority priority = BugPriority.MEDIUM; // Default MEDIUM
 
+    //@JsonIgnore  // 🔥 Circular reference fix
     @ManyToOne
-    @JoinColumn(name = "created_by")
-    private User createdBy;
+    @JoinColumn(name = "reported_by")
+    @JsonBackReference("user-bug-reported")
+    private User reportedBy;
 
+    //@JsonIgnore  // 🔥 Circular reference fix
     @ManyToOne
     @JoinColumn(name = "assigned_to", nullable = true)
+    @JsonBackReference("user-bug-assigned")
     private User assignedTo;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
+    @JsonBackReference("project-bug")
     private Project project;
 
     @Column(name = "created_at")
@@ -46,14 +54,14 @@ public class Bug {
     public Bug() {
     }
 
-    public Bug(Long id, String title, String description, BugStatus status, BugPriority priority, Project project, User createdBy, User assignedTo, LocalDateTime createdAt, LocalDateTime resolvedAt, List<BugAttachment> attachments) {
+    public Bug(Long id, String title, String description, BugStatus status, BugPriority priority, Project project, User reportedBy, User assignedTo, LocalDateTime createdAt, LocalDateTime resolvedAt, List<BugAttachment> attachments) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;
         this.priority = priority;
         this.project = project;
-        this.createdBy = createdBy;
+        this.reportedBy = reportedBy;
         this.assignedTo = assignedTo;
         this.createdAt = createdAt;
         this.resolvedAt = resolvedAt;
@@ -100,12 +108,12 @@ public class Bug {
         this.priority = priority;
     }
 
-    public User getCreatedBy() {
-        return createdBy;
+    public User getReportedBy() {
+        return reportedBy;
     }
 
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
+    public void setReportedBy(User reportedBy) {
+        this.reportedBy = reportedBy;
     }
 
     public User getAssignedTo() {
