@@ -25,7 +25,6 @@ public class Project {
     private LocalDate endDate;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL) // If project deleted, bugs also deleted
-    @JsonManagedReference("project-bug")
     private List<Bug> bugs = new ArrayList<>();
 
     public Project() {

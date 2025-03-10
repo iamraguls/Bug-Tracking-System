@@ -34,13 +34,13 @@ public class Bug {
 
     //@JsonIgnore  // 🔥 Circular reference fix
     @ManyToOne
-    @JoinColumn(name = "assigned_to", nullable = true)
-    @JsonBackReference("user-bug-assigned")
+//    @JoinColumn(name = "assigned_to", nullable = true)
+//    @JsonBackReference("user-bug-assigned")
     private User assignedTo;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
-    @JsonBackReference("project-bug")
+//    @JoinColumn(name = "project_id")
+//    @JsonBackReference("project-bug")
     private Project project;
 
     @Column(name = "created_at")

@@ -25,12 +25,12 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role roles;
 
-    @JsonIgnore  // 🔥 Circular reference fix
+//    @JsonIgnore  // 🔥 Circular reference fix
     @OneToMany(mappedBy = "reportedBy", cascade = CascadeType.ALL)
 //    @JsonManagedReference("user-bug-reported")
     private List<Bug> reportedBugs;
 
-    @JsonIgnore  // 🔥 Circular reference fix
+//    @JsonIgnore  // 🔥 Circular reference fix
     @OneToMany(mappedBy = "assignedTo", cascade = CascadeType.ALL)
 //    @JsonManagedReference("user-bug-assigned")
     private List<Bug> assignedBugs;
