@@ -3,6 +3,8 @@ package com.project.BugTrackingSystem.controller;
 import com.project.BugTrackingSystem.dto.BugDTO;
 import com.project.BugTrackingSystem.dto.BugResponseDTO;
 import com.project.BugTrackingSystem.entity.Bug;
+import com.project.BugTrackingSystem.entity.BugStatus;
+import com.project.BugTrackingSystem.entity.Role;
 import com.project.BugTrackingSystem.service.BugService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,21 @@ public class BugController {
     @PutMapping("/bugs/{id}/assign")
     public BugResponseDTO assignBug(@PathVariable Long id, @RequestParam Long developerId){
         return bugService.assignBug(id, developerId);
+    }
+
+    @PutMapping("/bugs/{id}/status")
+    public BugResponseDTO changeStatus(@PathVariable Long id, @RequestParam String status){
+        return bugService.changeStatus(id,status);
+    }
+
+    @PutMapping("/bugs/status")
+    public List<BugResponseDTO> getBugByStatus(@RequestParam String status){
+        return bugService.getBugByStatus(status);
+    }
+
+    @PutMapping("/bugs/priority")
+    public List<BugResponseDTO> getBugByPriority(@RequestParam String priority){
+        return bugService.getBugByPriority(priority);
     }
 
 }

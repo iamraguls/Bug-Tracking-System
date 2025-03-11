@@ -102,4 +102,25 @@ public class BugService {
         bugRepository.save(bug);
         return new BugResponseDTO(bug);
     }
+
+    public BugResponseDTO changeStatus(Long id, String status) {
+        Bug bug = bugRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Bug not found"));
+        bug.setStatus(BugStatus.valueOf(status.toUpperCase()));
+        bug.setResolvedAt(LocalDateTime.now());
+        bugRepository.save(bug);
+        return new BugResponseDTO(bug);
+    }
+
+    public List<BugResponseDTO> getBugByStatus(String status) {
+        BugStatus status1 = BugStatus.valueOf(status.toUpperCase());
+        List<Bug> bugs = bugRepository.findByStatus(status1);
+        return bugs.stream().map(BugResponseDTO::new).collect(Collectors.toList());
+    }
+
+    public List<BugResponseDTO> getBugByPriority(String priority) {
+        BugPriority priority1 = BugPriority.valueOf(priority.toUpperCase());
+        List<Bug> bugs = bugRepository.findByPriority(priority1);
+        return bugs.stream().map(BugResponseDTO::new).collect(Collectors.toList());
+    }
 }
