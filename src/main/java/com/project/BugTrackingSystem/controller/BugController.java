@@ -37,4 +37,8 @@ public class BugController {
         return bugService.deleteByBugId(bugId);
     }
 
+    @PutMapping("/bug/{bugId}")
+    public BugResponseDTO updateBug(@PathVariable Long bugId, @RequestBody BugDTO bugDTO) {
+        return bugService.updateBug(bugId, bugDTO);
+    }
 }

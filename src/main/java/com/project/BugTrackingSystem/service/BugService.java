@@ -82,4 +82,15 @@ public class BugService {
         bugRepository.delete(bug);
         return "Bug deleted successfully";
     }
+
+    public BugResponseDTO updateBug(Long bugId, BugDTO bugDTO) {
+        Bug bug = bugRepository.findById(bugId)
+                .orElseThrow(() -> new RuntimeException("Bug not found"));
+        bug.setTitle(bugDTO.getTitle());
+        bug.setDescription(bugDTO.getDescription());
+        bug.setStatus(BugStatus.valueOf(bugDTO.getStatus())); // Convert String to Enum
+        bug.setPriority(BugPriority.valueOf(bugDTO.getPriority())); // Convert String to Enum
+        bugRepository.save(bug);
+        return new BugResponseDTO(bug);
+    }
 }

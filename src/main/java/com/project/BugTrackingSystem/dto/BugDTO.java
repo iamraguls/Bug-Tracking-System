@@ -1,5 +1,6 @@
 package com.project.BugTrackingSystem.dto;
 
+import com.project.BugTrackingSystem.entity.Bug;
 import com.project.BugTrackingSystem.image.BugAttachment;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,12 @@ public class BugDTO {
     private Long reportedById;
     private Long assignedToId;
     private List<BugAttachment> attachments;
+
+    public BugDTO(Bug bug) {
+        this.title = bug.getTitle();
+        this.description = bug.getDescription();
+
+    }
 
     public String getTitle() {
         return title;
