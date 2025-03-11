@@ -41,4 +41,10 @@ public class BugController {
     public BugResponseDTO updateBug(@PathVariable Long bugId, @RequestBody BugDTO bugDTO) {
         return bugService.updateBug(bugId, bugDTO);
     }
+
+    @PutMapping("/bugs/{id}/assign")
+    public BugResponseDTO assignBug(@PathVariable Long id, @RequestParam Long developerId){
+        return bugService.assignBug(id, developerId);
+    }
+
 }

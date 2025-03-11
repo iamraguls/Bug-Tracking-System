@@ -93,4 +93,13 @@ public class BugService {
         bugRepository.save(bug);
         return new BugResponseDTO(bug);
     }
+
+    public BugResponseDTO assignBug(Long bugId, Long developerId) {
+        Bug bug = bugRepository.findById(bugId)
+                .orElseThrow(() -> new RuntimeException("Bug not found"));
+        User developer = userRepository.findById(developerId).orElseThrow(() -> new RuntimeException("Bug not found"));
+        bug.setAssignedTo(developer);
+        bugRepository.save(bug);
+        return new BugResponseDTO(bug);
+    }
 }
